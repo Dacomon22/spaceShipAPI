@@ -1,15 +1,21 @@
 package com.example.spaceship.service;
 
+import com.example.spaceship.SpaceShipApiApplication;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.mockito.InjectMocks;
+import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  *
  * @author santi
  */
+@SpringBootTest(classes = SpaceShipApiApplication.class)
 public class SpaceShipServiceTest {
-
+    
+    @InjectMocks
     SpaceShipService service;
+    
 
     @Test
     public void getSpaceShipByIdTest_nullParameter() {
