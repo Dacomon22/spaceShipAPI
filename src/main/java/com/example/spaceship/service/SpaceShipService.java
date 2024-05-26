@@ -23,7 +23,7 @@ public class SpaceShipService {
         if (id == null || id.isEmpty()) 
             throw new IllegalArgumentException("El parametro es invalido");
         
-        return Optional.empty();
+        return repository.findById(id);
     }
     
     public String getSpaceShipByName(String name){

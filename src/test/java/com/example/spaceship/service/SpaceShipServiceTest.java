@@ -1,8 +1,10 @@
 package com.example.spaceship.service;
 
 import com.example.spaceship.SpaceShipApiApplication;
+import com.example.spaceship.domain.model.SpaceShip;
 import com.example.spaceship.entity.SpaceShipEntity;
 import com.examples.spaceship.domain.repository.SpaceShipRepository;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,8 +48,17 @@ public class SpaceShipServiceTest {
     
     @Test
     public void getSpaceShipByIdTest_notFoundId() {
+        when(repository.findById("notFound")).thenReturn(Optional.empty());
         var actual = service.getSpaceShipById("notFound");
         assertTrue(actual.isEmpty());
+    }
+    
+    @Test
+    public void getSpaceShipByIdTest_foundId() {
+        when(repository.findById("found")).thenReturn(Optional.of(new SpaceShip("found", "Found", List.of(), "Warship", "Last", "Alliance")));
+        var actual = service.getSpaceShipById("found");
+        assertTrue(actual.isPresent());
+        assertEquals("Found", actual.get().name());
     }
 
     @Test
