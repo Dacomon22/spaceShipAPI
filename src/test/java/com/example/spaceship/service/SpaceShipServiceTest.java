@@ -2,7 +2,7 @@ package com.example.spaceship.service;
 
 import com.example.spaceship.SpaceShipApiApplication;
 import com.example.spaceship.entity.SpaceShipEntity;
-import com.examples.spaceship.repository.SpaceShipRepository;
+import com.examples.spaceship.domain.repository.SpaceShipRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
  *
  * @author santi
  */
-@SpringBootTest(classes = SpaceShipApiApplication.class)
 public class SpaceShipServiceTest {
 
     SpaceShipService service;
@@ -34,23 +33,22 @@ public class SpaceShipServiceTest {
     @Test
     public void getSpaceShipByIdTest_nullParameter() {
         assertThrows(IllegalArgumentException.class, () -> {
-            service.getSpaceShipByID(null);
+            service.getSpaceShipById(null);
         });
     }
 
     @Test
     public void getSpaceShipByIdTest_emptyParameter() {
         assertThrows(IllegalArgumentException.class, () -> {
-            service.getSpaceShipByID("");
+            service.getSpaceShipById("");
         });
     }
-
+    
     @Test
-    public void getSpaceShipByIdTest_foundShip(){
-        SpaceShipEntity entity = new SpaceShipEntity("1", "Apollo", "Sleek");
-        when(repository.findById("1")).thenReturn(Optional.of(entity));
-
-        }
+    public void getSpaceShipByIdTest_notFoundId() {
+        var actual = service.getSpaceShipById("notFound");
+        assertTrue(actual.isEmpty());
+    }
 
     @Test
     public void getSpaceShipByNameTest_nullParameter() {

@@ -2,7 +2,8 @@
 package com.example.spaceship.service;
 
 import com.example.spaceship.domain.model.SpaceShip;
-import com.examples.spaceship.repository.SpaceShipRepository;
+import com.examples.spaceship.domain.repository.SpaceShipRepository;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,11 +19,11 @@ public class SpaceShipService {
         this.repository = repository;
     }
     
-    public SpaceShip getSpaceShipByID(String id){
-        if (id == null || id.isEmpty()) {
+    public Optional<SpaceShip> getSpaceShipById(String id){
+        if (id == null || id.isEmpty()) 
             throw new IllegalArgumentException("El parametro es invalido");
-        }
-    return null;
+        
+        return Optional.empty();
     }
     
     public String getSpaceShipByName(String name){
