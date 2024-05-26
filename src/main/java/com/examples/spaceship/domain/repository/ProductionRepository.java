@@ -9,6 +9,6 @@ import java.util.List;
  */
 public interface ProductionRepository {
     
-    List<Production> findProcutions();
+    List<Production> findAllProcutions();
     
 }
