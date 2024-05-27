@@ -1,12 +1,9 @@
 package com.example.spaceship.infrastructure.repository;
 
 import com.example.spaceship.domain.model.Production;
-import com.examples.spaceship.domain.repository.ProductionRepository;
-import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.TestInstance;
@@ -15,14 +12,9 @@ import static org.mockito.Mockito.verify;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.support.TestPropertySourceUtils;
-import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 /**
@@ -38,27 +30,21 @@ public class ProductionRepositoryPostgresTest {
             .withUsername("myuser")
             .withPassword("mypassword");
 
-   
-    static final GenericContainer<?> redisContainer = new GenericContainer<>("redis:latest")
-            .withExposedPorts(6379);
 
     @DynamicPropertySource
     static void postgresqlProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
         registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
         registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
-        registry.add("spring.redis.host", redisContainer::getHost);
-        registry.add("spring.redis.port", () -> redisContainer.getMappedPort(6379));
     }
 
     static {
         postgreSQLContainer.start();
-        redisContainer.start();
     }
 
     @AfterAll
     public static void tearDownClass() {
-        postgreSQLContainer.stop();
+
     }
 
     @BeforeEach
@@ -82,7 +68,7 @@ public class ProductionRepositoryPostgresTest {
     public void testFindAllProcutions() {
 
         var actual = repository.findAllProcutions();
-        assertEquals(2, actual.size());
+        assertEquals(4, actual.size());
         assertTrue(actual.stream().anyMatch(prod -> switch (prod) {
             case Production.Serie serie ->
                 serie.name().equals("Star Trek: The Next Generation");
@@ -92,8 +78,23 @@ public class ProductionRepositoryPostgresTest {
         ));
         
         var cached = repository.findAllProcutions();
-        assertEquals(2, cached.size());
+        assertEquals(4, cached.size());
         verify(jdbcTemplate, Mockito.times(1)).query(Mockito.anyString(), Mockito.any(ProductionRepositoryPostgres.ProductionRowMapper.class));
     }
+    
+       @Test
+    public void testFindProductionsByIdStarShip(){
+
+        var actual = repository.findProductionBySpaceShipId("2");
+        assertEquals(3, actual.size());
+        assertTrue(actual.stream().anyMatch(prod -> switch (prod) {
+            case Production.Serie serie ->
+                serie.name().equals("Star Trek: The Next Generation");
+            case Production.Movie movie ->
+                false;
+        }
+        ));
+    }
+
 
 }

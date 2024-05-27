@@ -11,4 +11,8 @@ public interface ProductionRepository {
     
     List<Production> findAllProcutions();
     
+    List<Production> findProductionBySpaceShipId(String id);
+    
+    void saveProductions(List<Production> productions,String id);
+    
 }

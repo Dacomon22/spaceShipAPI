@@ -23,14 +23,29 @@ public class ProductionRepositoryPostgres implements ProductionRepository {
     
     static final String SQL_FIND_ALL_PRODUCTIONS = "SELECT id, type, name, launched_year, seasons FROM production";
 
+    static final String SQL_FIND_PRODUCTIONS_BY_SPACECHIP_ID = "SELECT id, type, name, launched_year, seasons FROM production p INNER JOIN spaceship_production sp ON p.id = sp.production_id WHERE sp.spaceship_id = ?";
 
     @Override
     @Cacheable(value ="productions")
     public List<Production> findAllProcutions() {
         return template.query(SQL_FIND_ALL_PRODUCTIONS, new ProductionRowMapper());
     }
+
+    @Override
+    public List<Production> findProductionBySpaceShipId(String id) {
+        
+        return template.query(SQL_FIND_PRODUCTIONS_BY_SPACECHIP_ID, new ProductionRowMapper(),id);
+    }
+
+    @Override
+    public void saveProductions(List<Production> productions, String id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
     static class ProductionRowMapper implements RowMapper<Production> {
+        
+        
+        
         @Override
         public Production mapRow(ResultSet rs, int rowNum) throws SQLException {
             String type = rs.getString("type");
@@ -45,5 +60,6 @@ public class ProductionRepositoryPostgres implements ProductionRepository {
             throw new SQLException("Unknown production type: " + type);
         }
     }
+    
     
 }
