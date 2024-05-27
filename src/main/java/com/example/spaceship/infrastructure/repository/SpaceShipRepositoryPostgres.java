@@ -25,15 +25,16 @@ public class SpaceShipRepositoryPostgres implements SpaceShipRepository {
     @Autowired
     ProductionRepositoryPostgres productionRepository;
 
-    static final String SQL_FIND_ALL_PRODUCTIONS = "SELECT id, type, name, launched_year, seasons FROM production";
+    static final String SQL_FIND_ALL_SPACESHIPS = "SELECT id, name, type, last_captain, faction FROM spaceship LIMIT ? OFFSET ?";
     
     static final String SQL_FIND_SPACESHIP_BY_ID = "SELECT id, name, type, last_captain, faction FROM spaceship WHERE id = ?";
     
      static final String SQL_FIND_SPACESHIP_BY_NAME_CONTAINING = "SELECT id, name, type, last_captain, faction FROM spaceship WHERE name LIKE ?";
 
+     
     @Override
     public List<SpaceShip> findAll(int offset, int limit) {
-        return null;
+        return template.query(SQL_FIND_ALL_SPACESHIPS, new SpaceShipRowMapper(productionRepository),limit,offset);
     }
 
     @Override

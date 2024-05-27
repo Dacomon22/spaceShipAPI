@@ -60,7 +60,15 @@ public class SpaceShipRepositoryPostgresTest {
         assertEquals(2, actual.size());
         assertEquals("Starship", actual.get(0).type());
         assertEquals("Explorer", actual.get(1).type());
-
+    }
+    
+    @Test
+    public void testFindAll(){
+        var actual = repository.findAll(2, 3);
+        assertEquals(3, actual.size());
+        assertEquals("Defiant", actual.get(0).name());
+        assertEquals("Excelsior", actual.get(1).name());
+        assertEquals("Prometheus", actual.get(2).name());
     }
 
 

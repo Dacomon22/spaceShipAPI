@@ -27,8 +27,12 @@ CREATE TABLE spaceship_production (
 
 -- Insert example data for testing
 INSERT INTO spaceship (id, name, type, last_captain, faction)
-VALUES ('1', 'USS Enterprise', 'Starship', 'Jean-Luc Picard', 'Federation'),
-        ('2', 'USS Discovery', 'Explorer', 'Ranbow', 'Federation');
+VALUES  ('1', 'USS Enterprise', 'Starship', 'Jean-Luc Picard', 'Federation'),
+        ('2', 'USS Discovery', 'Explorer', 'Gabriel Lorca', 'Federation'),
+    ('3', 'Defiant', 'Warship', 'Benjamin Sisko', 'Federation'),
+    ('4', 'Excelsior', 'Explorer', 'Hikaru Sulu', 'Federation'),
+    ('5', 'Prometheus', 'Tactical Cruiser', 'Unknown', 'Federation'),
+    ('6', 'Voyager', 'Starship', 'Kathryn Janeway', 'Federation');
 INSERT INTO production (type, name, launched_year, seasons)
 VALUES ('Movie', 'Star Trek: The Motion Picture', 1979, NULL),
         ('Movie', 'Star Trek: The Motion Discovery', 2020, NULL),
@@ -40,5 +44,10 @@ VALUES ('1', 1),
         ('2', 3),
         ('2', 4),
         ('2', 1),
+       ('4', 2),
+        ('5', 4),
+        ('6', 1),
+        ('3', 4),
+        ('3', 1),
        ('1', 2);
 
