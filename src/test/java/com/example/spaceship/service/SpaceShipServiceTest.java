@@ -33,6 +33,17 @@ public class SpaceShipServiceTest {
     }
 
     @Test
+    public void getAllSpaceShip_Found(){
+    when(repository.findAll(0, 0)).thenReturn(List.of(new SpaceShip("1", "USS", List.of(), "Explorer", "Rambo", "Alliance"),new SpaceShip("2", "USS EX", List.of(), "Scout", "Chris", "Horde")));
+    var actual = service.getAllSpaceShip(0,0);
+        assertFalse(actual.isEmpty());
+        assertEquals("USS", actual.get(0).name());
+        assertEquals("Horde", actual.get(1).faction());
+    }
+    
+   
+    
+    @Test
     public void getSpaceShipByIdTest_nullParameter() {
         assertThrows(IllegalArgumentException.class, () -> {
             service.getSpaceShipById(null);
@@ -73,6 +84,22 @@ public class SpaceShipServiceTest {
         assertThrows(IllegalArgumentException.class, () -> {
             service.getSpaceShipByName("");
         });
+    }
+    
+      @Test
+    public void getSpaceShipByNameTest_notNameFound() {
+        when(repository.findByNameContaining("notFound")).thenReturn(List.of());
+        var actual = service.getSpaceShipByName("notFound");
+        assertTrue(actual.isEmpty());
+    }
+    
+    @Test
+    public void getSpaceShipByNameTest_foundName() {
+        when(repository.findByNameContaining("USS")).thenReturn(List.of(new SpaceShip("1", "USS", List.of(), "Explorer", "Rambo", "Alliance"),new SpaceShip("2", "USS EX", List.of(), "Scout", "Chris", "Horde")));
+        var actual = service.getSpaceShipByName("USS");
+        assertFalse(actual.isEmpty());
+        assertEquals("USS", actual.get(0).name());
+        assertEquals("Scout", actual.get(1).type());
     }
 
     @Test

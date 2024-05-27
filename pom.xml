@@ -119,6 +119,7 @@
                 <configuration>
                     <compilerArgs>
                         <arg>--enable-preview</arg>
+                        <arg>-parameters</arg>
                     </compilerArgs>
                 </configuration>
             </plugin>
