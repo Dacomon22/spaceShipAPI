@@ -22,9 +22,11 @@ public class SpaceShipAspect {
             long numericId = Long.parseLong(id);
             if (numericId < 0) {
                 logger.warn("Requested SpaceShip with a negative ID: {}", id);
+                throw new ResourceNotFoundException("ID cannot be negative: " + id);
             }
         } catch (NumberFormatException e) {
             logger.warn("Invalid SpaceShip ID: {}", id);
+            throw new ResourceNotFoundException("Invalid ID format: " + id);
         }
     }
 }
