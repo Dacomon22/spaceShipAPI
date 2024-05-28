@@ -2,7 +2,6 @@ package com.example.spaceship.service;
 
 import com.example.spaceship.SpaceShipApiApplication;
 import com.example.spaceship.domain.model.SpaceShip;
-import com.example.spaceship.entity.SpaceShipEntity;
 import com.examples.spaceship.domain.repository.SpaceShipRepository;
 import java.util.List;
 import java.util.Optional;

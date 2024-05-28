@@ -1,10 +1,13 @@
 package com.example.spaceship.util;
 
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -28,5 +31,20 @@ public class SpaceShipAspect {
             logger.warn("Invalid SpaceShip ID: {}", id);
             throw new ResourceNotFoundException("Invalid ID format: " + id);
         }
+    }
+
+    @Autowired
+    private KafkaProducer kafkaProducer;
+
+    @Pointcut("within(@org.springframework.web.bind.annotation.RestController *)")
+    public void restControllerMethods() {}
+
+    @After("restControllerMethods()")
+    public void logRestCall(JoinPoint joinPoint) {
+        String className = joinPoint.getSignature().getDeclaringTypeName();
+        String methodName = joinPoint.getSignature().getName();
+        String message = "REST call to " + className + "." + methodName + " with arguments: " + joinPoint.getArgs();
+
+        kafkaProducer.sendMessage(message);
     }
 }

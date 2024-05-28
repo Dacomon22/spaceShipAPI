@@ -7,6 +7,11 @@ CREATE TABLE production (
     seasons SMALLINT
 );
 
+CREATE TABLE spaceship_log (
+    id SERIAL PRIMARY KEY,
+    message VARCHAR(500) NOT NULL
+);
+
 -- Crear tabla para SpaceShip
 CREATE TABLE spaceship (
     id VARCHAR(255) PRIMARY KEY,
